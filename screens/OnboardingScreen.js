@@ -1,13 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, Dimensions, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient'; // Importation du dégradé
 
 const { width, height } = Dimensions.get('window');
 
 const slides = [
   {
     id: '1',
-    image: require('../assets/image1.jpeg'), // Remplacez par votre propre image
+    image: require('../assets/image1.jpeg'),
     title: 'Bienvenue dans l\'app',
     description: 'Découvrez toutes les fonctionnalités de notre application.',
   },
@@ -27,21 +28,17 @@ const slides = [
 
 const OnboardingScreen = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef(null); // Référence pour accéder à FlatList
+  const flatListRef = useRef(null);
 
-  // Fonction pour changer de slide
   const handleNext = () => {
     if (currentIndex < slides.length - 1) {
-      // Passer à la slide suivante
       setCurrentIndex(currentIndex + 1);
       flatListRef.current.scrollToIndex({ index: currentIndex + 1, animated: true });
     } else {
-      // Aller à l'écran d'accueil ou autre destination
-      navigation.navigate('Home'); // Remplacez 'Home' par le nom de votre écran d'accueil
+      navigation.navigate('Home');
     }
   };
 
-  // Fonction pour revenir à la slide précédente
   const handlePrevious = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
@@ -49,18 +46,24 @@ const OnboardingScreen = ({ navigation }) => {
     }
   };
 
-  // Fonction pour afficher chaque slide avec ImageBackground
   const renderItem = ({ item, index }) => {
     return (
       <ImageBackground source={item.image} style={[styles.slide, { width, height }]}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-        </View>
+        {/* Ajout du LinearGradient pour un léger effet sombre */}
+        <LinearGradient
+          colors={['rgba(0, 0, 0, 0.3)', 'rgba(0, 0, 0, 0.8)']}
+          style={[styles.gradient, { width, height }]}
+        >
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{item.title}</Text>
+            {/* Tu peux ajouter la description ici si besoin */}
+            {/* <Text style={styles.description}>{item.description}</Text> */}
+          </View>
+        </LinearGradient>
       </ImageBackground>
     );
   };
 
-  // Fonction pour afficher les indicateurs de progression (stepping)
   const renderProgressIndicator = () => {
     return (
       <View style={styles.progressContainer}>
@@ -88,7 +91,7 @@ const OnboardingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        ref={flatListRef} // Référence pour pouvoir utiliser scrollToIndex
+        ref={flatListRef}
         data={slides}
         renderItem={renderItem}
         horizontal
@@ -101,34 +104,24 @@ const OnboardingScreen = ({ navigation }) => {
         }}
         initialScrollIndex={currentIndex}
       />
-      
-      {/* Indicateurs de progression */}
+
+        <View style={styles?.logoContainer}>
+                <Image source={require("../assets/logo-agri.png")} style={styles?.logo} />
+        </View>
+
       {renderProgressIndicator()}
 
-      {/* Contrôles de navigation */}
       <View style={styles.buttonsContainer}>
-        {/* <TouchableOpacity
-          style={[styles.button, styles.previousButton]}
-          onPress={handlePrevious}
-          disabled={currentIndex === 0} // Désactiver le bouton précédent sur la première slide
-        >
-          <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity> */}
-        
+
         <TouchableOpacity
           style={styles.button}
           onPress={handleNext}
         > 
             <Ionicons name="arrow-forward" size={40} color="white" />
-          
         </TouchableOpacity>
       </View>
-
-
-          {/* Indicateurs de progression */}
-      {renderCreated()}
-
-
+        
+        {renderCreated()}
 
     </View>
   );
@@ -140,12 +133,18 @@ const styles = StyleSheet.create({
     flexDirection:"column",
     justifyContent: 'center',
     alignItems: 'center',
-//     backgroundColor: '#fff',
   },
   slide: {
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'cover',
+  },
+  gradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textContainer: {
         marginTop: 100,
@@ -186,13 +185,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 32,
-//     marginLeft: 10,
   },
   progressContainer: {
     flexDirection: 'row',
     position: "absolute",
     bottom: 80
-//     marginBottom: 20,
   },
   progressDot: {
     width: 10,
@@ -215,6 +212,14 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontWeight: "bold",
         fontSize: 10
+  },
+  logoContainer:{
+        flexDirection: 'row',
+        position: "absolute",
+        top: 40
+  },
+  logo:{
+
   }
 });
 
