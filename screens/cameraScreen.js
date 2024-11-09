@@ -1,61 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 
 const CameraScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera?.Constants?.Type?.back);
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef(null);
 
   useEffect(() => {
     (async () => {
+      // Demander la permission pour accéder à la caméra
       const { status } = await Camera.requestCameraPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(
-          "Permission requise",
-          "Cette application a besoin d'accéder à votre caméra pour prendre des photos.",
-          [{ text: "D'accord" }]
-        );
-      }
       setHasPermission(status === 'granted');
     })();
   }, []);
 
+  // Si la permission n'est pas encore donnée
+  if (hasPermission === null) {
+    return <Text>Demande d'autorisation pour la caméra...</Text>;
+  }
+  // Si l'utilisateur refuse la permission
+  if (hasPermission === false) {
+    return <Text>Accès à la caméra refusé</Text>;
+  }
+
+  // Fonction pour prendre la photo
   const takePicture = async () => {
     if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
-      setPhoto(photo.uri);
-      console.log(photo.uri);
+      const photoData = await cameraRef.current.takePictureAsync();
+      setPhoto(photoData.uri); // Sauvegarde l'URI de la photo prise
     }
   };
 
-  if (hasPermission === null) {
-    return <Text>Demande de permission pour utiliser la caméra...</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>Accès à la caméra refusé.</Text>;
-  }
-
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={cameraRef}>
+      <Camera style={styles.camera} ref={cameraRef}>
         <View style={styles.cameraControls}>
-          <TouchableOpacity
-            style={styles.flipButton}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}
-          >
-            <Text style={styles.text}> Retourner </Text>
-          </TouchableOpacity>
+          <Button title="Prendre une photo" onPress={takePicture} />
         </View>
       </Camera>
-      <Button title="Prendre une photo" onPress={takePicture} />
+
+      {/* Afficher la photo prise */}
       {photo && (
         <View style={styles.preview}>
           <Text>Photo prise !</Text>
@@ -78,26 +63,17 @@ const styles = StyleSheet.create({
   },
   cameraControls: {
     flex: 1,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    margin: 20,
-  },
-  flipButton: {
-    flex: 0.1,
-    alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    color: 'white',
+    marginBottom: 30,
   },
   preview: {
     marginTop: 20,
     alignItems: 'center',
   },
   photo: {
-    width: 100,
-    height: 100,
+    width: 300,
+    height: 300,
     borderRadius: 10,
   },
 });
