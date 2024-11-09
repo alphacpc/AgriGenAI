@@ -9,19 +9,19 @@ const slides = [
   {
     id: '1',
     image: require('../assets/image1.jpeg'),
-    title: 'Bienvenue dans l\'app',
+    title: "Révolutionnez votre agriculture avec l'IA",
     description: 'Découvrez toutes les fonctionnalités de notre application.',
   },
   {
     id: '2',
     image: require('../assets/image2.jpeg'),
-    title: 'Explorez les fonctionnalités',
+    title: "Maximisez vos rendements avec l'IA générative",
     description: 'Accédez à des outils puissants pour vous aider.',
   },
   {
     id: '3',
     image: require('../assets/image3.jpeg'),
-    title: 'Rejoignez-nous',
+    title: "Exploitez le pouvoir de l'IA pour des récoltes durables.",
     description: 'Créez un compte pour démarrer votre aventure.',
   },
 ];
@@ -103,6 +103,7 @@ const OnboardingScreen = ({ navigation }) => {
           setCurrentIndex(index);
         }}
         initialScrollIndex={currentIndex}
+        contentContainerStyle={{ flexGrow: 1 }}
       />
 
         <View style={styles?.logoContainer}>
@@ -130,14 +131,18 @@ const OnboardingScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:"column",
+//     flexDirection:"column",
     justifyContent: 'center',
     alignItems: 'center',
+    height: "100%",
+
   },
   slide: {
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'cover',
+    height: "100%",
+    width: "100%"
   },
   gradient: {
     position: 'absolute',
@@ -150,7 +155,7 @@ const styles = StyleSheet.create({
         marginTop: 100,
   },
   title: {
-    fontSize: 32,
+    fontSize: 48,
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
@@ -162,8 +167,8 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
         position: 'absolute',
-        backgroundColor: "#FO5",
         bottom: 120,
+        margin: 0,
   },
   button: {
     backgroundColor: '#218E54',
@@ -189,7 +194,8 @@ const styles = StyleSheet.create({
   progressContainer: {
     flexDirection: 'row',
     position: "absolute",
-    bottom: 80
+    bottom: 80,
+    margin: 0
   },
   progressDot: {
     width: 10,
@@ -206,7 +212,8 @@ const styles = StyleSheet.create({
   createdContainer: {
         flexDirection: 'row',
         position: "absolute",
-        bottom: 40
+        bottom: 40,
+        margin: 0
   },
   createdText:{
         color: "#fff",
@@ -216,11 +223,10 @@ const styles = StyleSheet.create({
   logoContainer:{
         flexDirection: 'row',
         position: "absolute",
-        top: 40
+        top: 40,
+            margin: 0,
+            alignItems: 'center',
   },
-  logo:{
-
-  }
 });
 
 export default OnboardingScreen;
