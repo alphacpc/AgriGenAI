@@ -1,9 +1,17 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
+
+  const navigation = useNavigation();
+
+  const handleNavigateToCamera = () => {
+    navigation.navigate('Camera'); // Navigue vers CameraScreen
+  };
+
   return (
         <View style={styles.container}>
         {/* Header avec menu burger, nom et icône */}
@@ -65,7 +73,7 @@ const Home = () => {
   
         {/* Section pour prendre une photo */}
         <View style={styles.photoSection}>
-            <TouchableOpacity style={styles.photo}>
+            <TouchableOpacity style={styles.photo} onPress={handleNavigateToCamera}>
               <Image source={require('../assets/take.png')} style={styles.procedureImage} />
               <Text style={styles.photoButtonText}>Prendre le diagnostique</Text>
             </TouchableOpacity>
