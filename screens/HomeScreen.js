@@ -1,47 +1,121 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 
-
-
-// const Tab = createBottomTabNavigator();
-// const screenOptions = {
-//   tabBarShowLabel: true,
-//   headerShown: false,
-//   tabBarStyle: {
-//     position: "absolution",
-//     bottom: 0,
-//     right: 0,
-//     left: 0,
-//     elevation: 0,
-//     height: 60,
-//     background : "#F06"
-//   }
-// }
-
-
-
-
-const HomeScreen = () => {
+const Home = () => {
   return (
-
-      <View style={styles.container}>
-      <Text style={styles.text}>Bienvenue sur l'écran d'accueil!</Text>
-    </View>
+        <View style={styles.container}>
+        {/* Header avec menu burger, nom et icône */}
+        <View style={styles.header}>
+          <TouchableOpacity>
+            <FontAwesome name="bars" size={50} color="#218E54" />
+          </TouchableOpacity>
+          <View style={styles?.welcome}>
+            <Image source={require('../assets/logo-green.png')} style={styles.appIcon} />
+            <Text style={styles.headerText}>Bienvenue</Text>
+          </View>
+        </View>
+  
+        {/* Section météo */}
+        <View style={styles.weatherSection}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.weatherCard}>
+              <Image source={require('../assets/meteo-good.png')} style={styles.weatherIcon} />
+              <Text style={styles.weatherText}>Diourbel, 12 Oct</Text>
+              <Text style={styles.weatherText}>Couché du soleil: 18:46</Text>
+              <Text style={styles.weatherValue}>25°C</Text>
+            </View>
+            <View style={styles.weatherCard}>
+              <Image source={require('../assets/meteo-good.png')} style={styles.weatherIcon} />
+              <Text style={styles.weatherText}>Diourbel, 12 Oct</Text>
+              <Text style={styles.weatherText}>Couché du soleil: 18:46</Text>
+              <Text style={styles.weatherValue}>25°C</Text>
+            </View>
+            <View style={styles.weatherCard}>
+              <Image source={require('../assets/meteo-good.png')} style={styles.weatherIcon} />
+              <Text style={styles.weatherText}>Diourbel, 12 Oct</Text>
+              <Text style={styles.weatherText}>Couché du soleil: 18:46</Text>
+              <Text style={styles.weatherValue}>25°C</Text>
+            </View>
+          </ScrollView>
+        </View>
+  
+        {/* Section procédure de traitement */}
+        <View style={styles.procedureSection}>
+          <Text style={styles.sectionTitle}>Procédure de traitement</Text>
+          <View style={styles.procedureIcons}>
+            <FontAwesome name="user" size={30} color="black" />
+            <FontAwesome name="arrow-right" size={24} color="black" />
+            <FontAwesome name="wrench" size={30} color="black" />
+            <FontAwesome name="arrow-right" size={24} color="black" />
+            <FontAwesome name="check" size={30} color="black" />
+          </View>
+        </View>
+  
+        {/* Section pour prendre une photo */}
+        <View style={styles.photoSection}>
+          <Text style={styles.sectionTitle}>Prenez une photo pour le diagnostic</Text>
+          <TouchableOpacity style={styles.photoButton}>
+            <FontAwesome name="camera" size={24} color="white" />
+            <Text style={styles.photoButtonText}>Prendre une photo</Text>
+          </TouchableOpacity>
+        </View>
+  
+        {/* Barre de navigation en bas */}
+        <View style={styles.bottomNav}>
+          <TouchableOpacity style={styles.navItem}>
+            <FontAwesome name="home" size={24} color="black" />
+            <Text>Accueil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <FontAwesome name="cog" size={24} color="black" />
+            <Text>Paramètre</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <FontAwesome name="shopping-cart" size={24} color="black" />
+            <Text>Panier</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <FontAwesome name="users" size={24} color="black" />
+            <Text>Communauté</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <FontAwesome name="user" size={24} color="black" />
+            <Text>Profil</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
   );
 };
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+// });
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
+        container: { flex: 1, paddingTop: 30, backgroundColor: '#fff' },
+        header: { flexDirection: 'row', alignItems: 'start', padding: 10, backgroundColor: '#fff' },
+        headerText: { fontSize: 20, fontWeight: 'bold', color:"#218E54" },
+        appIcon: { width: 80, height: 20 },
+        weatherSection: { padding: 10, marginTop: 10 },
+        sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+        weatherCard: { padding: 10, backgroundColor: '#218E54', color: "#fff", borderRadius: 14, marginRight: 30, width: 300, position: "relative" },
+        weatherIcon: { width: 150, height: 80, marginBottom: 10 },
+        weatherText: { fontSize: 18, fontWeight: "bol", color: "#fff", marginBottom: 10 },
+        weatherValue: { position: "absolute", right: "5%", top: "20%", fontSize: 55, fontWeight: "bold", color: "#fff", marginBottom: 10 },
+        procedureSection: { padding: 10, alignItems: 'center', marginVertical: 20 },
+        procedureIcons: { flexDirection: 'row', alignItems: 'center' },
+        photoSection: { alignItems: 'center', padding: 10, marginVertical: 20 },
+        photoButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#007bff', padding: 10, borderRadius: 8 },
+        photoButtonText: { color: 'white', marginLeft: 10, fontSize: 16 },
+        bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#ddd' },
+        navItem: { alignItems: 'center' },
+        welcome: { marginLeft: 10}
 });
 
-export default HomeScreen;
+export default Home;
