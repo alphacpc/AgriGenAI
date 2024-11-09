@@ -9,32 +9,61 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const screenOptions = {
-  tabBarShowLabel: true,
+  tabBarShowLabel: false,
   headerShown: false,
   tabBarStyle: {
-    height: 60,
-    backgroundColor : "#F06"
+//     height: 60,
+        // flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingTop: 5,
+    backgroundColor : "#FFF"
   }
 }
 
 const MainTabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name="Home" component={Home} options={{
-        tabBarIcon:({focused}) =><View style={styles.container}>
-                        {/* <FontAwesome name="home" size={24} color={focused ? "green" : "black"} /> */}
-                        <Entypo name="home" size={24} color={focused ? "green" : "black"} />
-                </View>
-        
-      }}/>
-      <Tab.Screen name="Profile" component={Profile} options={{
-        tabBarIcon:({focused}) => <View style={styles.container}>
-                        {/* <FontAwesome name="home" size={24} color={focused ? "green" : "black"} /> */}
-                        <Entypo name="user" size={24} color={focused ? "green" : "black"} />
-        </View>
-        
-      }}/>
-    </Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} options={{
+                tabBarIcon:({focused}) =><View style={styles.container}>
+                                <Entypo name="home" size={32} color={focused ? "green" : "black"} />
+                        </View>
+                
+        }}/>
+
+        <Tab.Screen name="Setting" component={Home} options={{
+                tabBarIcon:({focused}) =><View style={styles.container}>
+            <FontAwesome name="cog" size={24} color="black" />
+                        
+                        </View>
+                
+        }}/>
+
+        <Tab.Screen name="Cart" component={Home} options={{
+                tabBarIcon:({focused}) =><View style={styles.container}>
+            <FontAwesome name="shopping-cart" size={24} color="black" />
+                        
+                        </View>
+                
+        }}/>
+
+        <Tab.Screen name="Community" component={Home} options={{
+                tabBarIcon:({focused}) =><View style={styles.container}>
+            <FontAwesome name="users" size={24} color="black" />
+                        
+                        </View>
+                
+        }}/>
+
+        <Tab.Screen name="User" component={Home} options={{
+                tabBarIcon:({focused}) =><View style={styles.container}>
+            <FontAwesome name="user" size={24} color="black" />
+                        
+                        </View>
+                
+        }}/>
+
+        </Tab.Navigator>
   );
 };
 
