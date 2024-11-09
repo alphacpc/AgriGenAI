@@ -35,7 +35,7 @@ const OnboardingScreen = ({ navigation }) => {
       setCurrentIndex(currentIndex + 1);
       flatListRef.current.scrollToIndex({ index: currentIndex + 1, animated: true });
     } else {
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     }
   };
 
