@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Dimensions, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
@@ -49,14 +49,15 @@ const OnboardingScreen = ({ navigation }) => {
     }
   };
 
-  // Fonction pour afficher chaque slide
+  // Fonction pour afficher chaque slide avec ImageBackground
   const renderItem = ({ item, index }) => {
     return (
-      <View style={styles.slide}>
-        <Image source={item.image} style={styles.image} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-      </View>
+      <ImageBackground source={item.image} style={[styles.slide, { width, height }]}>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+        </View>
+      </ImageBackground>
     );
   };
 
@@ -95,7 +96,7 @@ const OnboardingScreen = ({ navigation }) => {
       />
       
       {/* Indicateurs de progression */}
-
+      {renderProgressIndicator()}
 
       {/* Contrôles de navigation */}
       <View style={styles.buttonsContainer}>
@@ -107,14 +108,18 @@ const OnboardingScreen = ({ navigation }) => {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
-        {renderProgressIndicator()}
-        
         <TouchableOpacity
           style={styles.button}
           onPress={handleNext}
         >
+          {currentIndex === slides.length - 1 ? (
+            <View style={styles.startButton}>
+              <Ionicons name="checkmark" size={24} color="white" />
+              <Text style={styles.buttonText}>Commencer</Text>
+            </View>
+          ) : (
             <Ionicons name="arrow-forward" size={24} color="white" />
-          
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -131,31 +136,31 @@ const styles = StyleSheet.create({
   slide: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: width,
-    height: height,
-    padding: 20,
+    resizeMode: 'cover', // Assurez-vous que l'image couvre toute la zone
   },
-  image: {
-    width: 250,
-    height: 250,
-    marginBottom: 30,
+  textContainer: {
+    position: 'absolute',
+    bottom: 50,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'white',
     marginBottom: 10,
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#666',
+    color: 'white',
     marginBottom: 20,
   },
   buttonsContainer: {
     flexDirection: 'row',
-    alignItems: "center",
-    justifyContent: "center",
     position: 'absolute',
     bottom: 50,
     justifyContent: 'space-between',
@@ -177,7 +182,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    width: "10rem"
   },
   buttonText: {
     color: '#fff',
