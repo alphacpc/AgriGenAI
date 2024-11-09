@@ -69,8 +69,7 @@ const Home = () => {
               <Image source={require('../assets/take.png')} style={styles.procedureImage} />
               <Text style={styles.photoButtonText}>Prendre le diagnostique</Text>
             </TouchableOpacity>
-        </View>
-  
+        </View>  
       </View>
   );
 };
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
         weatherText: { fontSize: 18, fontWeight: "bol", color: "#fff", marginBottom: 10 },
         weatherValue: { position: "absolute", right: "5%", top: "20%", fontSize: 55, fontWeight: "bold", color: "#fff", marginBottom: 10 },
         
-        procedureSection: { flexDirection: "row",padding: 10, alignItems: 'center', justifyContent: "center", marginVertical: 30 },
+        procedureSection: { flexDirection: "row",padding: 10, alignItems: 'center', justifyContent: "center", marginVertical: 50 },
         
         procedureItem: { flexDirection: 'column', alignItems: 'center', justifyContent:"center" },
         procedureImage: { width: 60, height: 60, marginBottom: 0 },
