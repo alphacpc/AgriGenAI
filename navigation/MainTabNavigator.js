@@ -13,7 +13,8 @@ const screenOptions = {
         justifyContent: "center",
         alignItems: "center",
         paddingTop: 5,
-        backgroundColor : "#FFF"
+        backgroundColor : "#FFF",
+        borderColor: "white",
   }
 }
 
