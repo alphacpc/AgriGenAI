@@ -43,59 +43,39 @@ const Home = () => {
   
         {/* Section procédure de traitement */}
         <View style={styles.procedureSection}>
-          <Text style={styles.sectionTitle}>Procédure de traitement</Text>
-          <View style={styles.procedureIcons}>
-            <FontAwesome name="user" size={30} color="black" />
-            <FontAwesome name="arrow-right" size={24} color="black" />
-            <FontAwesome name="wrench" size={30} color="black" />
-            <FontAwesome name="arrow-right" size={24} color="black" />
-            <FontAwesome name="check" size={30} color="black" />
+          <View style={styles.procedureItem}>
+            <Text style={styles.procedureText}>Photo</Text>
+            <Image source={require('../assets/picture.png')} style={styles.procedureImage} />
+          </View>
+
+          <Image source={require('../assets/arrow.png')} style={styles.procedureSeparate} />
+
+          <View style={styles.procedureItem}>
+            <Text style={styles.procedureText}>Diagnostique</Text>
+            <Image source={require('../assets/process.png')} style={styles.procedureImage} />
+          </View>
+
+          <Image source={require('../assets/arrow.png')} style={styles.procedureSeparate} />
+
+          <View style={styles.procedureItem}>
+            <Text style={styles.procedureText}>Traitement</Text>
+            <Image source={require('../assets/trouss.png')} style={styles.procedureImage} />
           </View>
         </View>
   
         {/* Section pour prendre une photo */}
         <View style={styles.photoSection}>
-          <Text style={styles.sectionTitle}>Prenez une photo pour le diagnostic</Text>
-          <TouchableOpacity style={styles.photoButton}>
-            <FontAwesome name="camera" size={24} color="white" />
-            <Text style={styles.photoButtonText}>Prendre une photo</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.photo}>
+              <Image source={require('../assets/take.png')} style={styles.procedureImage} />
+              <Text style={styles.photoButtonText}>Prendre le diagnostique</Text>
+            </TouchableOpacity>
         </View>
   
-        {/* Barre de navigation en bas */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navItem}>
-            <FontAwesome name="home" size={24} color="black" />
-            <Text>Accueil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
-            <FontAwesome name="cog" size={24} color="black" />
-            <Text>Paramètre</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
-            <FontAwesome name="shopping-cart" size={24} color="black" />
-            <Text>Panier</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
-            <FontAwesome name="users" size={24} color="black" />
-            <Text>Communauté</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
-            <FontAwesome name="user" size={24} color="black" />
-            <Text>Profil</Text>
-          </TouchableOpacity>
-        </View>
       </View>
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-// });
+
 
 const styles = StyleSheet.create({
         container: { flex: 1, paddingTop: 30, backgroundColor: '#fff' },
@@ -104,15 +84,25 @@ const styles = StyleSheet.create({
         appIcon: { width: 80, height: 20 },
         weatherSection: { padding: 10, marginTop: 10 },
         sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+        
         weatherCard: { padding: 10, backgroundColor: '#218E54', color: "#fff", borderRadius: 14, marginRight: 30, width: 300, position: "relative" },
         weatherIcon: { width: 150, height: 80, marginBottom: 10 },
         weatherText: { fontSize: 18, fontWeight: "bol", color: "#fff", marginBottom: 10 },
         weatherValue: { position: "absolute", right: "5%", top: "20%", fontSize: 55, fontWeight: "bold", color: "#fff", marginBottom: 10 },
-        procedureSection: { padding: 10, alignItems: 'center', marginVertical: 20 },
-        procedureIcons: { flexDirection: 'row', alignItems: 'center' },
-        photoSection: { alignItems: 'center', padding: 10, marginVertical: 20 },
-        photoButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#007bff', padding: 10, borderRadius: 8 },
-        photoButtonText: { color: 'white', marginLeft: 10, fontSize: 16 },
+        
+        procedureSection: { flexDirection: "row",padding: 10, alignItems: 'center', justifyContent: "center", marginVertical: 30 },
+        
+        procedureItem: { flexDirection: 'column', alignItems: 'center', justifyContent:"center" },
+        procedureImage: { width: 60, height: 60, marginBottom: 0 },
+        procedureText: { fontSize: 18, fontWeight: "bold", color: "#218E54", marginBottom: 5 },
+        
+        procedureSeparate: { width: 30, height: 30, marginHorizontal: 10, marginTop:20 },
+
+        
+        photoSection: { alignItems: 'center', padding: 10 },
+        photo: { backgroundColor: '#218E54', alignItems: 'center', justifyContent: "center" ,  padding: 20, borderRadius: 14, flexDirection: 'row', width: 300},
+        photoButtonText: { color: 'white', marginHorizontal: 10, fontSize: 32, fontWeight: "bold", textAlign: "center" },
+        
         bottomNav: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 10, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#ddd' },
         navItem: { alignItems: 'center' },
         welcome: { marginLeft: 10}
