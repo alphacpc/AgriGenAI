@@ -12,12 +12,10 @@ const screenOptions = {
   tabBarShowLabel: false,
   headerShown: false,
   tabBarStyle: {
-//     height: 60,
-        // flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         paddingTop: 5,
-    backgroundColor : "#FFF"
+        backgroundColor : "#FFF"
   }
 }
 
@@ -26,38 +24,38 @@ const MainTabNavigator = () => {
     <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen name="Home" component={Home} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
-                                <Entypo name="home" size={32} color={focused ? "green" : "black"} />
+                                <Entypo name="home" size={30} color={focused ? "#218E54" : "#218E54"} />
                         </View>
                 
         }}/>
 
-        <Tab.Screen name="Setting" component={Home} options={{
+        <Tab.Screen name="Setting" component={""} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
-            <FontAwesome name="cog" size={24} color="black" />
+            <FontAwesome name="cog" size={30} color="#218E54" />
                         
                         </View>
                 
         }}/>
 
-        <Tab.Screen name="Cart" component={Home} options={{
+        <Tab.Screen name="Cart" component={""} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
-            <FontAwesome name="shopping-cart" size={24} color="black" />
+            <FontAwesome name="shopping-cart" size={30} color="#218E54" />
                         
                         </View>
                 
         }}/>
 
-        <Tab.Screen name="Community" component={Home} options={{
+        <Tab.Screen name="Community" component={""} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
-            <FontAwesome name="users" size={24} color="black" />
+            <FontAwesome name="users" size={30} color="#218E54" />
                         
                         </View>
                 
         }}/>
 
-        <Tab.Screen name="User" component={Home} options={{
+        <Tab.Screen name="User" component={""} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
-            <FontAwesome name="user" size={24} color="black" />
+            <FontAwesome name="user" size={30} color="#218E54" />
                         
                         </View>
                 
