@@ -55,7 +55,6 @@ const OnboardingScreen = ({ navigation }) => {
       <ImageBackground source={item.image} style={[styles.slide, { width, height }]}>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.description}>{item.description}</Text>
         </View>
       </ImageBackground>
     );
@@ -76,6 +75,14 @@ const OnboardingScreen = ({ navigation }) => {
         ))}
       </View>
     );
+  };
+
+  const renderCreated = () => {
+        return (
+            <View style={styles?.createdContainer}>
+              <Text style={styles?.createdText}>Développé par AgriGenAI</Text>
+            </View>
+        );
   };
 
   return (
@@ -100,28 +107,29 @@ const OnboardingScreen = ({ navigation }) => {
 
       {/* Contrôles de navigation */}
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.button, styles.previousButton]}
           onPress={handlePrevious}
           disabled={currentIndex === 0} // Désactiver le bouton précédent sur la première slide
         >
           <Ionicons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
         <TouchableOpacity
           style={styles.button}
           onPress={handleNext}
-        >
-          {currentIndex === slides.length - 1 ? (
-            <View style={styles.startButton}>
-              <Ionicons name="checkmark" size={24} color="white" />
-              <Text style={styles.buttonText}>Commencer</Text>
-            </View>
-          ) : (
-            <Ionicons name="arrow-forward" size={24} color="white" />
-          )}
+        > 
+            <Ionicons name="arrow-forward" size={40} color="white" />
+          
         </TouchableOpacity>
       </View>
+
+
+          {/* Indicateurs de progression */}
+      {renderCreated()}
+
+
+
     </View>
   );
 };
@@ -129,49 +137,41 @@ const OnboardingScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:"column",
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+//     backgroundColor: '#fff',
   },
   slide: {
     justifyContent: 'center',
     alignItems: 'center',
-    resizeMode: 'cover', // Assurez-vous que l'image couvre toute la zone
+    resizeMode: 'cover',
   },
   textContainer: {
-    position: 'absolute',
-    bottom: 50,
-    left: 20,
-    right: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+        marginTop: 100,
   },
   title: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
     color: 'white',
-    marginBottom: 10,
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
     color: 'white',
-    marginBottom: 20,
   },
   buttonsContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 50,
-    justifyContent: 'space-between',
-    width: '80%',
+        position: 'absolute',
+        backgroundColor: "#FO5",
+        bottom: 120,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#218E54',
     padding: 10,
     borderRadius: 50,
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -185,23 +185,37 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
-    marginLeft: 10,
+    fontSize: 32,
+//     marginLeft: 10,
   },
   progressContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
+    position: "absolute",
+    bottom: 80
+//     marginBottom: 20,
   },
   progressDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#ccc',
-    margin: 5,
+    backgroundColor: '#fff',
+    marginHorizontal: 6,
   },
   activeDot: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#218E54',
+    width: 45,
+    height: 10,
   },
+  createdContainer: {
+        flexDirection: 'row',
+        position: "absolute",
+        bottom: 40
+  },
+  createdText:{
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 10
+  }
 });
 
 export default OnboardingScreen;
