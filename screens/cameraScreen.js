@@ -35,6 +35,32 @@ const CameraScreen = () => {
     setPhoto(data);
   };
 
+  const sendPhotoToApi = async () => {
+    console.log("Send image")
+    // if (!photo) {
+    //   return;
+    // }
+
+    // const formData = new FormData();
+    // formData.append("photo", {
+    //   uri: photo.uri,
+    //   type: "image/jpeg",
+    //   name: "photo.jpg",
+    // });
+
+    // try {
+    //   const response = await axios.post("API_ENDPOINT", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+    //   console.log("Réponse de l'API:", response.data);
+    // } catch (error) {
+    //   console.error("Erreur lors de l'envoi de la photo:", error);
+    // }
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -48,7 +74,7 @@ const CameraScreen = () => {
               <FontAwesome name="refresh" size={sizeIcon} color={ colorIcon } />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
+            <TouchableOpacity style={styles.button} onPress={sendPhotoToApi}>
               <FontAwesome name="send" size={sizeIcon} color={ colorIcon } />
             </TouchableOpacity>
           </View>
