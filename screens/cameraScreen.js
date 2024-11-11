@@ -1,52 +1,98 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import { Camera } from 'expo-camera';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useState, useRef } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 const CameraScreen = () => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  const sizeIcon = 25;
+  const colorIcon = "#218E54"
   const cameraRef = useRef(null);
+  const [photo, setPhoto] = useState(null);
+  const [facing, setFacing] = useState('back');
+  const [permission, requestPermission] = useCameraPermissions();
 
-  useEffect(() => {
-    (async () => {
-      // Demander la permission pour accéder à la caméra
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  // Si la permission n'est pas encore donnée
-  if (hasPermission === null) {
-    return <Text>Demande d'autorisation pour la caméra...</Text>;
-  }
-  // Si l'utilisateur refuse la permission
-  if (hasPermission === false) {
-    return <Text>Accès à la caméra refusé</Text>;
+  if (!permission) {
+    return <View />;
   }
 
-  // Fonction pour prendre la photo
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const photoData = await cameraRef.current.takePictureAsync();
-      setPhoto(photoData.uri); // Sauvegarde l'URI de la photo prise
-    }
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>Nous avons besoin de votre autorisation pour montrer la caméra</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  }
+
+
+  const takePhoto = async () => {
+    const data = await cameraRef.current?.takePictureAsync();
+    setPhoto(data);
   };
+
+  const sendPhotoToApi = async () => {
+    console.log("Send image")
+    // if (!photo) {
+    //   return;
+    // }
+
+    // const formData = new FormData();
+    // formData.append("photo", {
+    //   uri: photo.uri,
+    //   type: "image/jpeg",
+    //   name: "photo.jpg",
+    // });
+
+    // try {
+    //   const response = await axios.post("API_ENDPOINT", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+    //   console.log("Réponse de l'API:", response.data);
+    // } catch (error) {
+    //   console.error("Erreur lors de l'envoi de la photo:", error);
+    // }
+  };
+
+
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} ref={cameraRef}>
-        <View style={styles.cameraControls}>
-          <Button title="Prendre une photo" onPress={takePicture} />
-        </View>
-      </Camera>
+      {
+        photo ? (
+        <View style={styles.previewContainer}>
+          <ImageBackground source={{ uri: photo.uri }} style={styles.preview} />
+          
+          <View style={styles?.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
+              <FontAwesome name="refresh" size={sizeIcon} color={ colorIcon } />
+            </TouchableOpacity>
 
-      {/* Afficher la photo prise */}
-      {photo && (
-        <View style={styles.preview}>
-          <Text>Photo prise !</Text>
-          <Image source={{ uri: photo }} style={styles.photo} />
+            <TouchableOpacity style={styles.button} onPress={sendPhotoToApi}>
+              <FontAwesome name="send" size={sizeIcon} color={ colorIcon } />
+            </TouchableOpacity>
+          </View>
         </View>
-      )}
+      ) : (
+
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <FontAwesome name="refresh" size={ sizeIcon } color={ colorIcon } />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={takePhoto}>
+            <FontAwesome name="camera" size={ sizeIcon } color={ colorIcon } />
+          </TouchableOpacity>
+
+        </View>
+      </CameraView> )}
     </View>
   );
 };
@@ -55,27 +101,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  message: {
+    textAlign: 'center',
+    paddingBottom: 10,
   },
   camera: {
-    width: '100%',
-    height: '70%',
-  },
-  cameraControls: {
     flex: 1,
-    justifyContent: 'flex-end',
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 5,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
     alignItems: 'center',
-    marginBottom: 30,
+    backgroundColor: "white",
+    marginHorizontal: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+    borderRadius: 10
+
+  },
+  previewContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   preview: {
-    marginTop: 20,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  photo: {
-    width: 300,
-    height: 300,
-    borderRadius: 10,
-  },
 });
+
+
 
 export default CameraScreen;

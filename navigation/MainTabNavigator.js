@@ -1,5 +1,6 @@
 import React from 'react';
 import Home from '../screens/HomeScreen';
+import Recap from '../screens/RecapScreen';
 import { View, StyleSheet } from 'react-native';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -44,6 +45,7 @@ const MainTabNavigator = () => {
                 
         }}/>
 
+
         <Tab.Screen name="Community" component={""} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
             <FontAwesome name="users" size={30} color="#218E54" />
@@ -52,7 +54,7 @@ const MainTabNavigator = () => {
                 
         }}/>
 
-        <Tab.Screen name="User" component={""} options={{
+        <Tab.Screen name="Recap" component={Recap} options={{
                 tabBarIcon:({focused}) =><View style={styles.container}>
             <FontAwesome name="user" size={30} color="#218E54" />
                         
