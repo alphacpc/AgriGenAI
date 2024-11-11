@@ -9,7 +9,7 @@ const Home = () => {
   const navigation = useNavigation();
 
   const handleNavigateToCamera = () => {
-    navigation.navigate('Camera'); // Navigue vers CameraScreen
+    navigation.navigate('Camera');
   };
 
   return (
