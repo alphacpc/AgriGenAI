@@ -1,8 +1,11 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 const CameraScreen = () => {
+  const sizeIcon = 25;
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
 
@@ -15,7 +18,7 @@ const CameraScreen = () => {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Text style={styles.message}>Nous avons besoin de votre autorisation pour montrer la caméra</Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
@@ -30,7 +33,15 @@ const CameraScreen = () => {
       <CameraView style={styles.camera} facing={facing}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+            <FontAwesome name="refresh" size={ sizeIcon } color="#218E54" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <FontAwesome name="camera" size={ sizeIcon } color="#218E54" />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+            <FontAwesome name="send" size={ sizeIcon } color="#218E54" />
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -51,7 +62,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    flex: 1,
+    position: "absolute",
+    bottom: 5,
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
@@ -60,12 +72,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'flex-end',
     alignItems: 'center',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+    backgroundColor: "white",
+    marginHorizontal: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+    borderRadius: 10
+
+  }
 });
 
 
