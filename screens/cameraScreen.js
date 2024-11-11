@@ -45,12 +45,12 @@ const CameraScreen = () => {
         <View style={styles.previewContainer}>
           <ImageBackground source={{ uri: photo.uri }} style={styles.preview} />
           
-          <View style={styles?.previewButtons}>
-            <TouchableOpacity style={styles.buttonImage} onPress={() => setPhoto(null)}>
+          <View style={styles?.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
               <FontAwesome name="refresh" size={sizeIcon} color="#218E54" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.buttonImage} onPress={() => setPhoto(null)}>
+            <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
               <FontAwesome name="send" size={sizeIcon} color="#218E54" />
             </TouchableOpacity>
           </View>
@@ -67,9 +67,6 @@ const CameraScreen = () => {
             <FontAwesome name="camera" size={ sizeIcon } color="#218E54" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <FontAwesome name="send" size={ sizeIcon } color="#218E54" />
-          </TouchableOpacity>
         </View>
       </CameraView> )}
     </View>
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     alignItems: 'center',
     backgroundColor: "white",
-    marginHorizontal: 10,
+    marginHorizontal: 20,
     paddingHorizontal: 5,
     paddingVertical: 10,
     borderRadius: 10
@@ -116,20 +113,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  previewButtons:{
-    position: "absolute",
-    bottom: 40,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "center"
-  },
-  buttonImage: {
-    alignItems: 'center',
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10,
-    marginHorizontal: 40
   },
 });
 
