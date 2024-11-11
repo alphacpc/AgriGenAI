@@ -1,52 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera';
+import * as MediaLibrary from "expo-media-library"
 
 const CameraScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [photo, setPhoto] = useState(null);
+  const [image, setImage] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const cameraRef = useRef(null);
 
-  useEffect(() => {
+
+  useEffect(()=>{
     (async () => {
-      // Demander la permission pour accéder à la caméra
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+      MediaLibrary.requestPermissionsAsync();
+      const cameraStatus = await  Camera.requestCameraPermissionsAsync();
+      setHasPermission(cameraStatus.status === "granted")
+    })
+  },[])
 
-  // Si la permission n'est pas encore donnée
-  if (hasPermission === null) {
-    return <Text>Demande d'autorisation pour la caméra...</Text>;
-  }
-  // Si l'utilisateur refuse la permission
-  if (hasPermission === false) {
-    return <Text>Accès à la caméra refusé</Text>;
-  }
-
-  // Fonction pour prendre la photo
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const photoData = await cameraRef.current.takePictureAsync();
-      setPhoto(photoData.uri); // Sauvegarde l'URI de la photo prise
-    }
-  };
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} ref={cameraRef}>
-        <View style={styles.cameraControls}>
-          <Button title="Prendre une photo" onPress={takePicture} />
-        </View>
-      </Camera>
+     <Camera
+      style={styles?.camera}
+      type={type}
+      flashMode={flash}
+      ref={cameraRef}
+     >
+      <Text>Hello</Text>
+     </Camera>
 
-      {/* Afficher la photo prise */}
-      {photo && (
-        <View style={styles.preview}>
-          <Text>Photo prise !</Text>
-          <Image source={{ uri: photo }} style={styles.photo} />
-        </View>
-      )}
+      
     </View>
   );
 };
@@ -54,12 +39,13 @@ const CameraScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
     justifyContent: 'center',
     alignItems: 'center',
   },
   camera: {
-    width: '100%',
-    height: '70%',
+    flex: 1,
+    borderRadius: 20,
   },
   cameraControls: {
     flex: 1,
