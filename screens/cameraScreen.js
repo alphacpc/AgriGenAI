@@ -6,12 +6,11 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const CameraScreen = () => {
   const sizeIcon = 25;
-  const [facing, setFacing] = useState('back');
-  const [photo, setPhoto] = useState('back');
-  const [permission, requestPermission] = useCameraPermissions();
+  const colorIcon = "#218E54"
   const cameraRef = useRef(null);
-  const [pictureSizes, setPictureSizes] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(undefined);
+  const [photo, setPhoto] = useState(null);
+  const [facing, setFacing] = useState('back');
+  const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
     return <View />;
@@ -32,7 +31,6 @@ const CameraScreen = () => {
 
 
   const takePhoto = async () => {
-    console.log(cameraRef.current)
     const data = await cameraRef.current?.takePictureAsync();
     setPhoto(data);
   };
@@ -47,11 +45,11 @@ const CameraScreen = () => {
           
           <View style={styles?.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
-              <FontAwesome name="refresh" size={sizeIcon} color="#218E54" />
+              <FontAwesome name="refresh" size={sizeIcon} color={ colorIcon } />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={() => setPhoto(null)}>
-              <FontAwesome name="send" size={sizeIcon} color="#218E54" />
+              <FontAwesome name="send" size={sizeIcon} color={ colorIcon } />
             </TouchableOpacity>
           </View>
         </View>
@@ -60,11 +58,11 @@ const CameraScreen = () => {
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <FontAwesome name="refresh" size={ sizeIcon } color="#218E54" />
+            <FontAwesome name="refresh" size={ sizeIcon } color={ colorIcon } />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={takePhoto}>
-            <FontAwesome name="camera" size={ sizeIcon } color="#218E54" />
+            <FontAwesome name="camera" size={ sizeIcon } color={ colorIcon } />
           </TouchableOpacity>
 
         </View>
