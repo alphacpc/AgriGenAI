@@ -1,5 +1,5 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -7,15 +7,17 @@ import { FontAwesome } from '@expo/vector-icons';
 const CameraScreen = () => {
   const sizeIcon = 25;
   const [facing, setFacing] = useState('back');
+  // const [photo, setPhoto] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
+  const cameraRef = useRef(null);
+  const [pictureSizes, setPictureSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(undefined);
 
   if (!permission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
         <Text style={styles.message}>Nous avons besoin de votre autorisation pour montrer la caméra</Text>
@@ -28,15 +30,26 @@ const CameraScreen = () => {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+
+  const takePhoto = async () => {
+    console.log("Click me")
+    console.log(cameraRef.current)
+    const data = await cameraRef.current?.takePictureAsync();
+    console.log(JSON.stringify(data));
+    console.log(JSON.stringify(data.uri));
+    setPhoto(data.uri);
+  };
+
+
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <FontAwesome name="refresh" size={ sizeIcon } color="#218E54" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+          <TouchableOpacity style={styles.button} onPress={takePhoto}>
             <FontAwesome name="camera" size={ sizeIcon } color="#218E54" />
           </TouchableOpacity>
 
