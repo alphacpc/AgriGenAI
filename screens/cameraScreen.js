@@ -1,13 +1,13 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 
 const CameraScreen = () => {
   const sizeIcon = 25;
   const [facing, setFacing] = useState('back');
-  // const [photo, setPhoto] = useState('back');
+  const [photo, setPhoto] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
   const [pictureSizes, setPictureSizes] = useState([]);
@@ -32,17 +32,25 @@ const CameraScreen = () => {
 
 
   const takePhoto = async () => {
-    console.log("Click me")
     console.log(cameraRef.current)
     const data = await cameraRef.current?.takePictureAsync();
-    console.log(JSON.stringify(data));
-    console.log(JSON.stringify(data.uri));
-    setPhoto(data.uri);
+    setPhoto(data);
   };
 
 
   return (
     <View style={styles.container}>
+      {
+        photo ? (
+        <View style={styles.previewContainer}>
+          <ImageBackground source={{ uri: photo.uri }} style={styles.preview} />
+          <TouchableOpacity style={styles.buttonImage} onPress={() => setPhoto(null)}>
+            <Text>Reprendre</Text>
+            <FontAwesome name="refresh" size={sizeIcon} color="#218E54" />
+          </TouchableOpacity>
+        </View>
+      ) : (
+
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
@@ -57,7 +65,7 @@ const CameraScreen = () => {
             <FontAwesome name="send" size={ sizeIcon } color="#218E54" />
           </TouchableOpacity>
         </View>
-      </CameraView>
+      </CameraView> )}
     </View>
   );
 };
@@ -91,7 +99,24 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10
 
-  }
+  },
+  previewContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  preview: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  buttonImage: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 10,
+  },
 });
 
 
