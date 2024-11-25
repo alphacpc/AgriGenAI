@@ -2,12 +2,14 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const CameraScreen = () => {
   const sizeIcon = 25;
   const colorIcon = "#218E54"
   const cameraRef = useRef(null);
+  const navigation = useNavigation();
   const [photo, setPhoto] = useState(null);
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
@@ -41,23 +43,31 @@ const CameraScreen = () => {
     //   return;
     // }
 
-    // const formData = new FormData();
-    // formData.append("photo", {
-    //   uri: photo.uri,
-    //   type: "image/jpeg",
-    //   name: "photo.jpg",
-    // });
+    console.log("File URI:", photo.uri);
+  console.log("File type:", "image/jpeg"); // Ou dynamique en fonction du type d'image
+  console.log("File name:", "photo.jpg");
+  console.log("Image size:", photo.uri);
 
-    // try {
-    //   const response = await axios.post("API_ENDPOINT", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Réponse de l'API:", response.data);
-    // } catch (error) {
-    //   console.error("Erreur lors de l'envoi de la photo:", error);
-    // }
+    const formData = new FormData();
+    formData.append("photo", {
+      uri: photo.uri,
+      type: "image/jpeg",
+      name: "photo.jpg",
+    });
+
+    console.log("Image size:", photo.uri);
+
+    try {
+      const response = await axios.post("http://192.168.10.10:8000/analyze-image/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Réponse de l'API:", response);
+      navigation.navigate("Recap", { data: response.data });
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de la photo:", error);
+    }
   };
 
 
