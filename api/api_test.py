@@ -138,18 +138,22 @@ def text_to_speech(text: str) -> str:
 
 @app.post("/analyze-image/")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
+    print(file)
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Type de fichier non supporté. Veuillez télécharger une image JPEG ou PNG.")
     
     try:
         # Lire l'image téléchargée
         image_data = await file.read()
+        print(f"Image data length: {len(image_data)} bytes")
         image = Image.open(io.BytesIO(image_data))
+        print("Image successfully opened")
         print(1)
         # Convertir l'image en bytes au format JPEG
         buffer = io.BytesIO()
         image.save(buffer, format='JPEG')
         image_bytes = buffer.getvalue()
+        print("Image successfully converted to JPEG")
         print("A")
         
         # Analyser l'image
@@ -159,6 +163,7 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
         # audio_file_name = text_to_speech(analysis_text)
         print(3)
         # Retourner le texte et l'URL pour télécharger l'audio
+        print(analysis_text)
         return {
             "analysis": analysis_text,
             # "audio_url": f"/download-audio/{audio_file_name}"

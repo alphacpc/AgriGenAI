@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const CameraScreen = () => {
   const sizeIcon = 25;
@@ -42,6 +43,11 @@ const CameraScreen = () => {
     //   return;
     // }
 
+    console.log("File URI:", photo.uri);
+  console.log("File type:", "image/jpeg"); // Ou dynamique en fonction du type d'image
+  console.log("File name:", "photo.jpg");
+  console.log("Image size:", photo.uri);
+
     const formData = new FormData();
     formData.append("photo", {
       uri: photo.uri,
@@ -49,13 +55,15 @@ const CameraScreen = () => {
       name: "photo.jpg",
     });
 
+    console.log("Image size:", photo.uri);
+
     try {
-      const response = await axios.post("http://127.0.0.1:8000/analyze-image/", formData, {
+      const response = await axios.post("http://192.168.10.10:8000/analyze-image/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("Réponse de l'API:", response.data);
+      console.log("Réponse de l'API:", response);
       navigation.navigate("Recap", { data: response.data });
     } catch (error) {
       console.error("Erreur lors de l'envoi de la photo:", error);
