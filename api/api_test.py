@@ -30,18 +30,26 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 # Initialiser le client Anthropic avec la clé API
 anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
-# Openai client
-# Créer un client OpenAI
+# OpenAI client
 client = OpenAI()
 
 app = FastAPI()
 
-# Prompt système
+# Prompt système modifié pour structurer la sortie
 system_prompt = """
-Vous êtes un spécialiste en reconnaissance d'images dans le domaine de l'agriculture, en langue française créer par AgriGenAI. Veuillez toujours répondre en français. Vous pouvez identifier des plantes, cultures, et signes de maladies ou de carences sur les images prises dans un champ. N'hésitez pas à nommer les cultures ou à décrire les symptômes observés sur les plantes.
+Vous êtes un spécialiste en reconnaissance d'images dans le domaine de l'agriculture, en langue française, créé par AgriGenAI. 
+Votre tâche est de retourner une analyse structurée de l'image fournie, sous le format JSON suivant :
+
+{
+    "Diagnostique": "Diagnostique précis et clair",
+    "Symptômes": "Liste des symptômes observés",
+    "Traitement": "Recommandations pour traiter ou prévenir"
+}
+
+Vous devez remplir ces trois champs de manière claire et concise, et ne pas inclure de texte hors de cette structure JSON. Toutes les informations doivent être en français.
 """
 
-def analyze_image(image_bytes: bytes) -> str:
+def analyze_image(image_bytes: bytes) -> dict:
     # Encode l'image en Base64
     base64_string = base64.b64encode(image_bytes).decode('utf-8')
     
@@ -65,108 +73,72 @@ def analyze_image(image_bytes: bytes) -> str:
                         },
                         {
                             "type": "text",
-                            "text": """Décris cette image:
-Voici un exemple de réponse. Il faudra respecter le meme format pour toutes les générations:
-
-Diagnostique:
-Cette image montre des feuilles de vigne atteintes de mildiou (Plasmopara viticola), une maladie fongique grave qui affecte couramment la vigne.
-
-Symptômes:
-- Taches brunes à violacées sur les feuilles
-- Zones nécrotiques en forme de mosaïque
-- Dessèchement progressif des tissus foliaires
-- Décoloration en "taches d'huile" caractéristique
-- Les zones affectées deviennent brunes et se dessèchent
-- Les feuilles présentent un aspect bicolore typique (vert/brun)
-
-Traitement:
-1.Mesures préventives :
-- Aérer la végétation par une taille appropriée
-- Éviter l'excès d'humidité
-- Favoriser une bonne circulation d'air
-
-2.Traitement curatif :
-- Application de fongicides à base de cuivre (bouillie bordelaise)
-- Produits systémiques homologués contre le mildiou
-- Alternance des matières actives pour éviter les résistances
-- Traitements préventifs en période à risque (printemps humide)
-- Éliminer les feuilles contaminées pour réduire l'inoculum
-
-3.Surveillance régulière :
-- Observer les premières contaminations au printemps
-- Suivre les bulletins d'alertes viticoles
-- Adapter la protection en fonction de la pression parasitaire"""
+                            "text": """Décrivez l'image sous la forme d'un objet JSON structuré conformément au format défini dans le prompt."""
                         }
                     ],
                 }
             ],
         )
-        return response.content[0].text
+        # Charger la réponse en tant qu'objet JSON
+        analysis_data = response.content[0].text
+        return eval(analysis_data)  # Transformer le JSON string en dict
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 def text_to_speech(text: str) -> str:
     try:
-
         # Créer un chemin unique pour le fichier audio
         output_dir = Path("audio_files")
-        print("A")
         output_dir.mkdir(exist_ok=True)
         audio_file_name = f"{uuid.uuid4()}.mp3"
-        print("B")
         audio_file_path = output_dir / audio_file_name
-        print("C")
 
         # Générer l'audio à partir du texte
-        # response = client.audio.speech.create(
-        #     model="tts-1",
-        #     voice="alloy",
-        #     input=text
-        # )
-        # print(response)
-        print("D")
+        response = client.audio.speech.create(
+            model="tts-1",
+            voice="alloy",
+            input=text
+        )
 
         # Sauvegarder l'audio dans un fichier
-        # response.stream_to_file(audio_file_path)
-        print("E")
+        response.stream_to_file(audio_file_path)
 
         # Retourner le nom du fichier audio
-        # return audio_file_name
-        return "Hello"
+        return audio_file_name
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de la génération de l'audio: {str(e)}")
 
 @app.post("/analyze-image/")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
-    print(file)
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Type de fichier non supporté. Veuillez télécharger une image JPEG ou PNG.")
     
     try:
         # Lire l'image téléchargée
         image_data = await file.read()
-        print(f"Image data length: {len(image_data)} bytes")
         image = Image.open(io.BytesIO(image_data))
-        print("Image successfully opened")
-        print(1)
+        
         # Convertir l'image en bytes au format JPEG
         buffer = io.BytesIO()
         image.save(buffer, format='JPEG')
         image_bytes = buffer.getvalue()
-        print("Image successfully converted to JPEG")
-        print("A")
         
         # Analyser l'image
-        analysis_text = analyze_image(image_bytes)
-        print(2)
-        # Générer l'audio à partir du texte
-        # audio_file_name = text_to_speech(analysis_text)
-        print(3)
-        # Retourner le texte et l'URL pour télécharger l'audio
-        print(analysis_text)
+        analysis = analyze_image(image_bytes)
+        
+        # Générer l'audio à partir du texte structuré
+        # audio_file_name = text_to_speech(
+        #     f"Diagnostique : {analysis['Diagnostique']}. Symptômes : {analysis['Symptômes']}. Traitement : {analysis['Traitement']}."
+        # )
+        
+        # Retourner l'objet structuré et l'URL pour télécharger l'audio
         return {
-            "analysis": analysis_text,
-            # "audio_url": f"/download-audio/{audio_file_name}"
+            "analysis": {
+                "Diagnostique": analysis["Diagnostique"],
+                "Symptômes": analysis["Symptômes"],
+                "Traitement": analysis["Traitement"],
+            },
+            # "audio": f"/download-audio/{audio_file_name}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'analyse de l'image ou de la génération de l'audio: {str(e)}")
@@ -185,4 +157,3 @@ def download_audio(audio_file_name: str):
 @app.get("/")
 def read_root():
     return {"message": "API d'analyse d'images agricoles. Utilisez le endpoint /analyze-image/ pour analyser une image."}
-
