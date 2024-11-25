@@ -41,23 +41,23 @@ const CameraScreen = () => {
     //   return;
     // }
 
-    // const formData = new FormData();
-    // formData.append("photo", {
-    //   uri: photo.uri,
-    //   type: "image/jpeg",
-    //   name: "photo.jpg",
-    // });
+    const formData = new FormData();
+    formData.append("photo", {
+      uri: photo.uri,
+      type: "image/jpeg",
+      name: "photo.jpg",
+    });
 
-    // try {
-    //   const response = await axios.post("API_ENDPOINT", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Réponse de l'API:", response.data);
-    // } catch (error) {
-    //   console.error("Erreur lors de l'envoi de la photo:", error);
-    // }
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/analyze-image/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Réponse de l'API:", response.data);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de la photo:", error);
+    }
   };
 
 
