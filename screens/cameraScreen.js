@@ -2,12 +2,13 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
 
 const CameraScreen = () => {
   const sizeIcon = 25;
   const colorIcon = "#218E54"
   const cameraRef = useRef(null);
+  const navigation = useNavigation();
   const [photo, setPhoto] = useState(null);
   const [facing, setFacing] = useState('back');
   const [permission, requestPermission] = useCameraPermissions();
@@ -55,6 +56,7 @@ const CameraScreen = () => {
         },
       });
       console.log("Réponse de l'API:", response.data);
+      navigation.navigate("Recap", { data: response.data });
     } catch (error) {
       console.error("Erreur lors de l'envoi de la photo:", error);
     }

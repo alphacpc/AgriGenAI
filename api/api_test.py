@@ -110,22 +110,29 @@ def text_to_speech(text: str) -> str:
 
         # Créer un chemin unique pour le fichier audio
         output_dir = Path("audio_files")
+        print("A")
         output_dir.mkdir(exist_ok=True)
         audio_file_name = f"{uuid.uuid4()}.mp3"
+        print("B")
         audio_file_path = output_dir / audio_file_name
+        print("C")
 
         # Générer l'audio à partir du texte
-        response = client.audio.speech.create(
-            model="tts-1",
-            voice="alloy",
-            input=text
-        )
+        # response = client.audio.speech.create(
+        #     model="tts-1",
+        #     voice="alloy",
+        #     input=text
+        # )
+        # print(response)
+        print("D")
 
         # Sauvegarder l'audio dans un fichier
-        response.stream_to_file(audio_file_path)
+        # response.stream_to_file(audio_file_path)
+        print("E")
 
         # Retourner le nom du fichier audio
-        return audio_file_name
+        # return audio_file_name
+        return "Hello"
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de la génération de l'audio: {str(e)}")
 
@@ -138,22 +145,23 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
         # Lire l'image téléchargée
         image_data = await file.read()
         image = Image.open(io.BytesIO(image_data))
-        
+        print(1)
         # Convertir l'image en bytes au format JPEG
         buffer = io.BytesIO()
         image.save(buffer, format='JPEG')
         image_bytes = buffer.getvalue()
+        print("A")
         
         # Analyser l'image
         analysis_text = analyze_image(image_bytes)
-        
+        print(2)
         # Générer l'audio à partir du texte
-        audio_file_name = text_to_speech(analysis_text)
-        
+        # audio_file_name = text_to_speech(analysis_text)
+        print(3)
         # Retourner le texte et l'URL pour télécharger l'audio
         return {
             "analysis": analysis_text,
-            "audio_url": f"/download-audio/{audio_file_name}"
+            # "audio_url": f"/download-audio/{audio_file_name}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'analyse de l'image ou de la génération de l'audio: {str(e)}")
