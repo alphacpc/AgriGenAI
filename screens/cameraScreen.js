@@ -46,25 +46,25 @@ const CameraScreen = () => {
       console.error("URI de la photo invalide :", photo.uri);
       return;
     }
-    
-    console.log("File URI:", photo.uri);
-  console.log("File type:", "image/jpeg"); // Ou dynamique en fonction du type d'image
-  console.log("File name:", "photo.jpg");
-  console.log("Image size:", photo.uri);
 
-    const formData = new FormData();
-    formData.append("photo", {
+    console.log("OOOOOOK")
+    const formData = await new FormData();
+    console.log(formData)
+    console.log(formData.append("photo", {
       uri: photo.uri,
       type: "image/jpeg",
       name: "photo.jpg",
-    });
+    }));
 
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
 
     console.log("Image size:", photo.uri);
 
     try {
-      const response = await axios.post("http://192.168.10.10:8000/analyze-image/", formData, {
+      const response = await axios.post("http://192.168.75.171:8000/analyze-image/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Accept": "application/json",
@@ -73,6 +73,8 @@ const CameraScreen = () => {
       console.log("Réponse de l'API:", response);
       navigation.navigate("Recap", { data: response.data });
     } catch (error) {
+      console.log("Ca ne marche pas")
+      console.log(error)
       console.error("Erreur lors de l'envoi de la photo:", error);
     }
   };

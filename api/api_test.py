@@ -110,6 +110,12 @@ def text_to_speech(text: str) -> str:
 
 @app.post("/analyze-image/")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
+    print(
+        {
+        "filename": file.filename,
+        "content_type": file.content_type,
+    }
+    )
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Type de fichier non supporté. Veuillez télécharger une image JPEG ou PNG.")
     
