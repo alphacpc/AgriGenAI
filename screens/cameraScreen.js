@@ -42,7 +42,11 @@ const CameraScreen = () => {
     // if (!photo) {
     //   return;
     // }
-
+    if (!photo.uri) {
+      console.error("URI de la photo invalide :", photo.uri);
+      return;
+    }
+    
     console.log("File URI:", photo.uri);
   console.log("File type:", "image/jpeg"); // Ou dynamique en fonction du type d'image
   console.log("File name:", "photo.jpg");
@@ -55,12 +59,15 @@ const CameraScreen = () => {
       name: "photo.jpg",
     });
 
+
+
     console.log("Image size:", photo.uri);
 
     try {
       const response = await axios.post("http://192.168.10.10:8000/analyze-image/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Accept": "application/json",
         },
       });
       console.log("Réponse de l'API:", response);
