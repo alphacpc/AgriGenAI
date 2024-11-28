@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Icône audio
 import { FontAwesome } from '@expo/vector-icons';
@@ -37,7 +37,6 @@ const RecapScreen = () => {
                 }
               };
 
-         // Fonction pour arrêter l'audio
         const stopAudio = async () => {
                 if (sound) {
                         await sound.stopAsync();
@@ -45,11 +44,10 @@ const RecapScreen = () => {
                 }
         };
     
-        // Fonction de nettoyage pour libérer les ressources audio
         useEffect(() => {
                 return () => {
                 if (sound) {
-                        sound.unloadAsync(); // Libère les ressources à la fin
+                        sound.unloadAsync();
                 }
                 };
         }, [sound]);
@@ -106,12 +104,12 @@ const RecapScreen = () => {
                                                 <FontAwesome name="share" size={38} color="#fff" />
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity style={styles.audioButton}>
+                                        {/* <TouchableOpacity style={styles.audioButton}>
                                                 <Icon name="volume-up" size={38} color="#fff" />
-                                        </TouchableOpacity>
+                                        </TouchableOpacity> */}
 
                                         <View>
-                                                <TouchableOpacity style={styles.audioButton} onPress={playPauseAudio}>
+                                                <TouchableOpacity style={styles.audioButton} onPress={isPlaying ? stopAudio : playAudio}>
                                                         <Icon name={isPlaying ? 'pause' : 'volume-up'} size={38} color="#fff" />
                                                 </TouchableOpacity>
                                                 <Text style={styles.text}>
@@ -181,6 +179,11 @@ const styles = StyleSheet.create({
         right: 10,
         top: 20,
   },
+  text:{
+        color: "orange",
+        fontWeight: "bold",
+        fontSize: 18
+  }
 });
 
 export default RecapScreen;
