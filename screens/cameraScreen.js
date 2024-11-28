@@ -38,51 +38,31 @@ const CameraScreen = () => {
   };
 
   const sendPhotoToApi = async () => {
-    console.log("Send image")
-    // if (!photo) {
-    //   return;
-    // }
     if (!photo.uri) {
       console.error("URI de la photo invalide :", photo.uri);
       return;
     }
 
-    console.log("OOOOOOK")
-    console.log("Valeur de photo", photo)
     const formData = await new FormData();
-    console.log(formData)
-
     formData.append("file", {
       uri: photo.uri,
       type: "image/jpeg",
       name: "photo.jpg",
     });
 
-    console.log(formData)
-
-
-    for (let [key, value] of formData._parts) {
-      console.log(`Key: ${key}`);
-      console.log("Value:", value);
-    }
-
-
-    console.log("Image size:", photo.uri);
-
     try {
-      console.log("OK")
+
       const response = await axios.post("http://192.168.75.171:8888/analyze-image/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Accept": "application/json",
         },
       });
-      console.log("Réponse de l'API:", response.data);
+    
       navigation.navigate("Recap", { data: response.data, image : photo.uri });
+    
     } catch (error) {
-      console.log("Ca ne marche pas")
       console.log(error.response?.data || error.message)
-      console.error("Erreur lors de l'envoi de la photo:", error);
     }
   };
 

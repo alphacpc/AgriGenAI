@@ -8,9 +8,6 @@ import { useRoute } from '@react-navigation/native';
 const RecapScreen = () => {
         const route = useRoute()
         const { data, image } = route.params
-        
-        console.log("Valeur de data", data)
-        console.log("Valeur de image", image)
   
         return (
         <View>
