@@ -1,13 +1,58 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Icône audio
 import { FontAwesome } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
+import { Audio } from 'expo-av'; 
+
 
 
 const RecapScreen = () => {
         const route = useRoute()
         const { data, image } = route.params
+        const [sound, setSound] = useState();
+        const [isPlaying, setIsPlaying] = useState(false);
+        const [isLoading, setIsLoading] = useState(false);
+       
+        const playAudio = async () => {
+                try {
+                        setIsLoading(true);
+                        const { sound } = await Audio.Sound.createAsync(
+                                require('../api/audio_files/b50af5c1-7ccf-41f2-a5cb-83d35537e1a6.mp3')
+                        );
+                        setSound(sound);
+                        await sound.playAsync(); // Lancer la lecture de l'audio
+                        setIsPlaying(true);
+                        sound.setOnPlaybackStatusUpdate(updatePlaybackStatus); // Mettre à jour le statut de lecture
+                } catch (error) {
+                  console.error("Erreur lors de la lecture de l'audio", error);
+                } finally {
+                  setIsLoading(false);
+                }
+        };
+
+        const updatePlaybackStatus = (status) => {
+                if (status.didJustFinish) {
+                  setIsPlaying(false);
+                }
+              };
+
+         // Fonction pour arrêter l'audio
+        const stopAudio = async () => {
+                if (sound) {
+                        await sound.stopAsync();
+                        setIsPlaying(false);
+                }
+        };
+    
+        // Fonction de nettoyage pour libérer les ressources audio
+        useEffect(() => {
+                return () => {
+                if (sound) {
+                        sound.unloadAsync(); // Libère les ressources à la fin
+                }
+                };
+        }, [sound]);
   
         return (
         <View>
@@ -64,6 +109,15 @@ const RecapScreen = () => {
                                         <TouchableOpacity style={styles.audioButton}>
                                                 <Icon name="volume-up" size={38} color="#fff" />
                                         </TouchableOpacity>
+
+                                        <View>
+                                                <TouchableOpacity style={styles.audioButton} onPress={playPauseAudio}>
+                                                        <Icon name={isPlaying ? 'pause' : 'volume-up'} size={38} color="#fff" />
+                                                </TouchableOpacity>
+                                                <Text style={styles.text}>
+                                                        {isPlaying ? 'Lecture en cours...' : 'Appuyez pour écouter'}
+                                                </Text>
+                                        </View>
                                 </View>
                         </View>
                 </ScrollView>

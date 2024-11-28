@@ -2,6 +2,7 @@
 
 api/.env
 api/venv
+api/audio_files
 
 
 # dependencies

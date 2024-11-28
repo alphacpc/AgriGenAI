@@ -104,18 +104,13 @@ def text_to_speech(text: str) -> str:
         response.stream_to_file(audio_file_path)
 
         # Retourner le nom du fichier audio
+        print("OOOOOOK")
         return audio_file_name
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de la génération de l'audio: {str(e)}")
 
 @app.post("/analyze-image/")
 async def analyze_image_endpoint(file: UploadFile = File(...)):
-    print(
-        {
-        "filename": file.filename,
-        "content_type": file.content_type,
-    }
-    )
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=400, detail="Type de fichier non supporté. Veuillez télécharger une image JPEG ou PNG.")
     
@@ -133,9 +128,9 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
         analysis = analyze_image(image_bytes)
         
         # Générer l'audio à partir du texte structuré
-        # audio_file_name = text_to_speech(
-        #     f"Diagnostique : {analysis['Diagnostique']}. Symptômes : {analysis['Symptômes']}. Traitement : {analysis['Traitement']}."
-        # )
+        audio_file_name = text_to_speech(
+            f"Diagnostique : {analysis['Diagnostique']}. Symptômes : {analysis['Symptômes']}. Traitement : {analysis['Traitement']}."
+        )
         
         # Retourner l'objet structuré et l'URL pour télécharger l'audio
         return {
@@ -144,7 +139,7 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
                 "Symptômes": analysis["Symptômes"],
                 "Traitement": analysis["Traitement"],
             },
-            # "audio": f"/download-audio/{audio_file_name}"
+            "audio": f"/download-audio/{audio_file_name}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'analyse de l'image ou de la génération de l'audio: {str(e)}")
