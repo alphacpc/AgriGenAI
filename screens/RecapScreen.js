@@ -1,11 +1,18 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Icône audio
 import { FontAwesome } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 
 const RecapScreen = () => {
-  return (
+        const route = useRoute()
+        const { data, image } = route.params
+        
+        console.log("Valeur de data", data)
+        console.log("Valeur de image", image)
+  
+        return (
         <View>
         
                 <View style={styles.header}>
@@ -23,7 +30,7 @@ const RecapScreen = () => {
                 <ScrollView contentContainerStyle={styles.container}>
 
                         <Image 
-                                source={{uri: 'https://via.placeholder.com/400x200'}} 
+                                source={{uri:image}} 
                                 style={styles.cardImage}
                         />
 
@@ -33,8 +40,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Diagnostique</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Diagnostique}
                                                 </Text>
                                         </View>
 
@@ -42,8 +48,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Symptomes</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Symptômes}
                                                 </Text>
                                         </View>
 
@@ -51,8 +56,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Traitements</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Traitement}
                                                 </Text>
                                         </View>
 
