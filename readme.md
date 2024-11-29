@@ -1,53 +1,52 @@
-Voici une version synthétique du fichier README.md pour votre projet React Native avec Expo et FastAPI :
+# AgriGenAI
 
-Projet React Native avec Expo
-Pré-requis
-Assurez-vous d'avoir installé :
-Node.js (version 18)
-Yarn
-Expo CLI : yarn global add expo-cli
-Python 3.x avec virtualenv
-Installation et démarrage
-1. Configuration du projet React Native
-Clonez le dépôt :
- git clone <url-du-depot>
-cd <nom-du-dossier>
+Bienvenue dans le projet **AgriGenAI**, une application qui révolutionne l'agriculture avec l'IA Générative. Ce guide vous accompagne dans l'installation et le démarrage du projet utilisant React Native avec Expo pour le front-end et FastAPI pour le back-end.
+
+## Pré-requis
+Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
+
+- **Node.js** (version 18)
+- **Yarn**
+- **Expo CLI** : `yarn global add expo-cli`
+- **Python** (version 3.x) avec **virtualenv**
 
 
-Installez les dépendances :
- yarn install
+## Installation et Démarrage
 
+### 1. Configuration du projet React Native
 
-Démarrez le projet :
- yarn start
+1. **Clonez le dépôt :**
+   ```bash
+   git clone <url-du-depot>
+   cd <nom-du-dossier>
 
+2. **Installez les dépendances :**
+   ```bash
+   yarn install
+3. **Démarrez le projet :**
+   ```bash
+   yarn start
 
-Téléchargez l'application Expo Go sur votre téléphone depuis le Play Store ou l'App Store.
-Scannez le QR Code affiché pour visualiser l'application.
+4. **Testez sur un appareil mobile :**
+   - Téléchargez l'application **Expo Go** depuis le Play Store ou l'App Store.
+   - Scannez le QR Code affiché dans votre terminal ou navigateur pour visualiser l'application.
 
-2. Configuration et démarrage de l'API FastAPI
-Naviguez dans le dossier de l'API :
- cd api
+### 2, Configuration et démarrage de l'API FastAPI
+1. **Naviguez dans le dossier de l'API :**
+   ```bash
+   cd api
+   
+2. **Créez un environnement virtuel :**
+   ```bash
+   python -m venv env
+   source env/bin/activate  # Sous Windows : env\Scripts\activate
 
+3. **Installez les dépendances :**
+   ```bash
+   pip install -r requirements.txt
 
-Créez un environnement virtuel :
- python -m venv env
-source env/bin/activate  # Sous Windows : env\Scripts\activate
+4. **Lancez le serveur FastAPI :**
+   ```bash
+   uvicorn api_test:app --host 0.0.0.0 --port 8000
 
-
-Installez les dépendances :
- pip install -r requirements.txt
-
-
-Lancez le serveur FastAPI :
- uvicorn main:app --host 0.0.0.0 --port 8000
-
-
-Votre API est maintenant accessible sur http://0.0.0.0:8000.
-
-Notes
-Expo Go est nécessaire pour tester l'application sur un appareil mobile.
-Modifiez les fichiers .env si des variables d'environnement sont requises.
-
-Cela permet d’être clair et concis tout en couvrant toutes les étapes nécessaires.
-
+5. **Accédez à l'API** Votre API est maintenant accessible sur [http://0.0.0.0:8000/]
