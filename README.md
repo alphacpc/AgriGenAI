@@ -20,8 +20,8 @@ Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votr
 
 1. **Clonez le dépôt :**
    ```bash
-   git clone <url-du-depot>
-   cd <nom-du-dossier>
+   git clone https://github.com/alphacpc/AgriGenAI.git
+   cd AgriGenAI
 
 2. **Installez les dépendances :**
    ```bash
