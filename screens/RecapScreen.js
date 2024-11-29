@@ -1,11 +1,59 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Icône audio
 import { FontAwesome } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import { Audio } from 'expo-av'; 
+import * as FileSystem from 'expo-file-system';
 
 
 const RecapScreen = () => {
-  return (
+        const route = useRoute()
+        const { data, image } = route.params
+        const [sound, setSound] = useState();
+        const [isPlaying, setIsPlaying] = useState(false);
+        const [isLoading, setIsLoading] = useState(false);
+
+        const playAudio = async () => {
+                
+                try {
+                        setIsLoading(true);
+                        const { sound } = await Audio.Sound.createAsync(
+                                require("../api/audio_files/fc2c8802-d028-455e-8ee2-e8de1eb39cb0.mp3")
+                        );
+                        setSound(sound);
+                        await sound.playAsync(); // Lancer la lecture de l'audio
+                        setIsPlaying(true);
+                        sound.setOnPlaybackStatusUpdate(updatePlaybackStatus); // Mettre à jour le statut de lecture
+                } catch (error) {
+                  console.error("Erreur lors de la lecture de l'audio", error);
+                } finally {
+                  setIsLoading(false);
+                }
+        };
+
+        const updatePlaybackStatus = (status) => {
+                if (status.didJustFinish) {
+                  setIsPlaying(false);
+                }
+              };
+
+        const stopAudio = async () => {
+                if (sound) {
+                        await sound.stopAsync();
+                        setIsPlaying(false);
+                }
+        };
+    
+        useEffect(() => {
+                return () => {
+                if (sound) {
+                        sound.unloadAsync();
+                }
+                };
+        }, [sound]);
+  
+        return (
         <View>
         
                 <View style={styles.header}>
@@ -23,7 +71,7 @@ const RecapScreen = () => {
                 <ScrollView contentContainerStyle={styles.container}>
 
                         <Image 
-                                source={{uri: 'https://via.placeholder.com/400x200'}} 
+                                source={{uri:image}} 
                                 style={styles.cardImage}
                         />
 
@@ -33,8 +81,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Diagnostique</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Diagnostique}
                                                 </Text>
                                         </View>
 
@@ -42,8 +89,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Symptomes</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Symptômes}
                                                 </Text>
                                         </View>
 
@@ -51,8 +97,7 @@ const RecapScreen = () => {
                                                 <Text style={styles.cardTitle}>Traitements</Text>
                                                 
                                                 <Text style={styles.cardDescription}>
-                                                        Voici une description détaillée du diagnostique de l'affection. Cette section
-                                                        peut contenir des informations sur les tests réalisés et les observations médicales.
+                                                        {data.analysis?.Traitement}
                                                 </Text>
                                         </View>
 
@@ -60,9 +105,18 @@ const RecapScreen = () => {
                                                 <FontAwesome name="share" size={38} color="#fff" />
                                         </TouchableOpacity>
 
-                                        <TouchableOpacity style={styles.audioButton}>
+                                        {/* <TouchableOpacity style={styles.audioButton}>
                                                 <Icon name="volume-up" size={38} color="#fff" />
-                                        </TouchableOpacity>
+                                        </TouchableOpacity> */}
+
+                                        <View>
+                                                <TouchableOpacity style={styles.audioButton} onPress={isPlaying ? stopAudio : playAudio}>
+                                                        <Icon name={isPlaying ? 'pause' : 'volume-up'} size={38} color="#fff" />
+                                                </TouchableOpacity>
+                                                <Text style={styles.text}>
+                                                        {isPlaying ? 'Lecture en cours...' : 'Appuyez pour écouter'}
+                                                </Text>
+                                        </View>
                                 </View>
                         </View>
                 </ScrollView>
@@ -126,6 +180,11 @@ const styles = StyleSheet.create({
         right: 10,
         top: 20,
   },
+  text:{
+        color: "orange",
+        fontWeight: "bold",
+        fontSize: 18
+  }
 });
 
 export default RecapScreen;
