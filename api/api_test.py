@@ -139,7 +139,8 @@ async def analyze_image_endpoint(file: UploadFile = File(...)):
                 "Symptômes": analysis["Symptômes"],
                 "Traitement": analysis["Traitement"],
             },
-            "audio": f"/download-audio/{audio_file_name}"
+            "audio": f"/download-audio/{audio_file_name}",
+            "audio_name": audio_file_name
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'analyse de l'image ou de la génération de l'audio: {str(e)}")

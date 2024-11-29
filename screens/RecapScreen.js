@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // Icône audio
 import { FontAwesome } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { Audio } from 'expo-av'; 
-
+import * as FileSystem from 'expo-file-system';
 
 
 const RecapScreen = () => {
@@ -13,12 +13,13 @@ const RecapScreen = () => {
         const [sound, setSound] = useState();
         const [isPlaying, setIsPlaying] = useState(false);
         const [isLoading, setIsLoading] = useState(false);
-       
+
         const playAudio = async () => {
+                
                 try {
                         setIsLoading(true);
                         const { sound } = await Audio.Sound.createAsync(
-                                require('../api/audio_files/b50af5c1-7ccf-41f2-a5cb-83d35537e1a6.mp3')
+                                require("../api/audio_files/fc2c8802-d028-455e-8ee2-e8de1eb39cb0.mp3")
                         );
                         setSound(sound);
                         await sound.playAsync(); // Lancer la lecture de l'audio

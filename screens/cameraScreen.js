@@ -52,13 +52,14 @@ const CameraScreen = () => {
 
     try {
 
-      const response = await axios.post("http://192.168.75.171:8888/analyze-image/", formData, {
+      const response = await axios.post("http://127.0.0.1:8888/analyze-image/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Accept": "application/json",
         },
       });
     
+      console.log(response.data)
       navigation.navigate("Recap", { data: response.data, image : photo.uri });
     
     } catch (error) {
