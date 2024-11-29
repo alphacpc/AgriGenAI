@@ -53,3 +53,13 @@ Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votr
    uvicorn api_test:app --host 0.0.0.0 --port 8000
 
 5. **Accédez à l'API** Votre API est maintenant accessible sur [http://0.0.0.0:8000/]
+
+
+## Fonctionnalités de l'application
+
+- Diagnostic des plantes grâce à l'IA.
+- Accès aux symptômes et traitements recommandés.
+  ![Diagnostic des plantes](assets/WhatsApp-Image2.jpeg)
+
+- Intégration des données météo en temps réel.
+  ![Intégration des données météo en temps réel](assets/WhatsApp-Image3.jpeg)
