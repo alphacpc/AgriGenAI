@@ -2,6 +2,9 @@
 
 Bienvenue dans le projet **AgriGenAI**, une application qui révolutionne l'agriculture avec l'IA Générative. Ce guide vous accompagne dans l'installation et le démarrage du projet utilisant React Native avec Expo pour le front-end et FastAPI pour le back-end.
 
+![Home Page](assets/WhatsApp Image 1.jpeg)
+
+
 ## Pré-requis
 Avant de commencer, assurez-vous d'avoir les outils suivants installés sur votre machine :
 
